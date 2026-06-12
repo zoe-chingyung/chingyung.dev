@@ -15,5 +15,5 @@ variable "site_bucket_name" {
 
 variable "github_repository" {
   type    = string
-  default = "chingyung/chingyung.dev" # CHANGE to your actual owner/repo
+  default = "zoe-chingyung/chingyung.dev" # CHANGE to your actual owner/repo
 }
