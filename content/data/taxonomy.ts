@@ -21,6 +21,7 @@ export const taxonomy: TaxonomyEntry[] = [
   { slug: "ci-cd", label: "CI/CD", description: "Build, test and deployment pipelines." },
   { slug: "observability", label: "Observability", description: "Metrics, logs, traces and operational insight." },
   { slug: "iac", label: "Infrastructure as Code", description: "Declarative infrastructure across tools and clouds." },
+  { slug: "seo", label: "SEO", description: "Search and AI-answer visibility for technical content." },
   { slug: "ai-engineering", label: "AI Engineering", description: "AI-assisted engineering workflows, agents and tooling." },
   { slug: "career", label: "Career", description: "Career development and professional reflections." },
   { slug: "learning-journey", label: "Learning Journey", description: "Ongoing study notes and learning documentation." },

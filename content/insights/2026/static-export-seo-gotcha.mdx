@@ -1,0 +1,25 @@
+---
+title: "TIL: useSearchParams quietly deleted my content from static HTML"
+description: "A Next.js static export gotcha: URL-driven filters can make your page lists invisible to crawlers — and the build stays green."
+date: 2026-06-16
+type: note
+tags: [seo, ci-cd]
+draft: true
+---
+
+I added URL-driven filtering to this site's Work and Insights pages using
+Next.js `useSearchParams`. The build passed. The pages worked in the browser.
+Then I grepped the exported HTML for an article title — zero matches.
+
+`useSearchParams` forces everything inside its Suspense boundary to render
+client-side only. In a static export, that means the prerendered HTML contains
+an empty shell where the article list should be. Browsers fill it in;
+crawlers and answer engines may not.
+
+The fix: render the default state (everything visible) on the server, then
+sync filters from `window.location` after mount and write changes back with
+`history.replaceState`. Full content in the static HTML, shareable filter
+URLs preserved.
+
+The real lesson is about verification: for a static site, a green build is
+not the acceptance test. The acceptance test is `grep "your content" out/`.

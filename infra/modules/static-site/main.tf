@@ -82,7 +82,7 @@ resource "aws_cloudfront_function" "url_rewrite" {
       var uri = request.uri;
       if (uri.endsWith('/')) {
         request.uri = uri + 'index.html';
-      } else if (!uri.includes('.')) {
+      } else if (!uri.includes('.') && !uri.endsWith('/opengraph-image')) {
         request.uri = uri + '/index.html';
       }
       return request;
@@ -114,7 +114,7 @@ resource "aws_cloudfront_response_headers_policy" "security" {
     content_security_policy {
       # 'unsafe-inline' for script-src is required by Next.js static export
       # bootstrap scripts; revisit if/when nonce support lands for export mode.
-      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloud.umami.is; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
       override                = true
     }
   }
