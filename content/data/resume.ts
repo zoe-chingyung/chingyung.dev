@@ -9,7 +9,7 @@ export const profile = {
   summary:
     "AWS Cloud & Security Engineer with 5+ years building and operating production infrastructure using Terraform, CloudFormation, and CI/CD automation. Hands-on across the AWS service catalogue — compute, storage, databases, serverless (Lambda), networking, and security — with a track record of deploying reusable IaC modules at scale and embedding compliance into every pipeline. Dual AWS Professional certifications (Solutions Architect + DevOps Engineer) and a CKA. Experienced building production observability with CloudWatch, Datadog, and Prometheus, and maintaining operational runbooks and incident response processes that keep services reliable.",
   links: {
-    github: "https://github.com/chingyung",
+    github: "https://github.com/zoe-chingyung",
     linkedin: "https://linkedin.com/in/thezoeyung",
     email: ["yungchingzoe", "gmail.com"] // 依照你的元件邏輯，分開組裝以防止網絡爬蟲
   },
@@ -145,21 +145,6 @@ export const skills: { category: string; items: string[] }[] = [
 ];
 
 export const certifications = [
-  {
-    name: "AWS Certified Solutions Architect",
-    issuer: "Amazon Web Services",
-    level: "PROFESSIONAL"
-  },
-  {
-    name: "AWS Certified DevOps Engineer",
-    issuer: "Amazon Web Services",
-    level: "PROFESSIONAL"
-  },
-  {
-    name: "Certified Kubernetes Administrator",
-    issuer: "Linux Foundation / CNCF",
-    level: "CKA"
-  }
 ];
 
 export const education = [
