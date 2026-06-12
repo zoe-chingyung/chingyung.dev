@@ -27,6 +27,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Generate Velite Collections
+        run: npx velite build
+
       - name: Typecheck
         run: npm run typecheck
 

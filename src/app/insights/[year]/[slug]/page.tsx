@@ -49,14 +49,10 @@ export default async function InsightPage({
           <span className="uppercase tracking-wide">{post.type}</span>
           <DraftBadge draft={post.draft} />
         </div>
-        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          {post.title}
-        </h1>
-        <p className="mt-3 max-w-xl leading-relaxed text-muted">
-          {post.description}
-        </p>
+        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{post.title}</h1>
+        <p className="mt-3 max-w-xl leading-relaxed text-muted">{post.description}</p>
         <div className="mt-4 flex flex-wrap gap-1.5">
-          {post.tags.map((t) => (
+          {post.tags.map((t: any) => (
             <TagChip key={t} tag={t} />
           ))}
         </div>

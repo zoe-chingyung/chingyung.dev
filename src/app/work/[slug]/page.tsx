@@ -40,21 +40,14 @@ export default async function WorkItemPage({
           <span className="uppercase tracking-wide">{item.kind}</span>
           <DraftBadge draft={item.draft} />
         </div>
-        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          {item.title}
-        </h1>
-        <p className="mt-3 max-w-xl leading-relaxed text-muted">
-          {item.description}
-        </p>
+        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{item.title}</h1>
+        <p className="mt-3 max-w-xl leading-relaxed text-muted">{item.description}</p>
         <div className="mt-4 flex flex-wrap items-center gap-1.5">
-          {item.tags.map((t) => (
+          {item.tags.map((t: any) => (
             <TagChip key={t} tag={t} />
           ))}
           {"repo" in item && item.repo ? (
-            <a
-              href={item.repo}
-              className="ml-1 font-mono text-xs text-accent hover:underline"
-            >
+            <a href={item.repo} className="ml-1 font-mono text-xs text-accent hover:underline">
               Repository →
             </a>
           ) : null}
