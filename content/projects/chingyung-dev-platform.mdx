@@ -1,0 +1,32 @@
+---
+title: "chingyung.dev — personal knowledge platform"
+description: "Static-first Next.js knowledge platform on AWS: private S3 + CloudFront, Terraform modules, OIDC-federated CI/CD."
+date: 2026-06-12
+tags: [aws, terraform, platform-engineering, ci-cd]
+technologies: [Next.js, TypeScript, Tailwind CSS, Terraform, GitHub Actions, S3, CloudFront]
+repo: https://github.com/chingyung/chingyung.dev
+featured: true
+---
+
+## Overview
+
+This website. A static-first engineering knowledge platform that doubles as a
+working demonstration of cloud, platform and security engineering practice.
+
+## Problem statement
+
+The previous site was a static resume page: no content pipeline, no SEO, and
+every change meant hand-editing HTML.
+
+## Solution
+
+Git-based MDX content behind a typed Content Access Layer, built to static
+assets by Next.js, served from a private S3 bucket through CloudFront, with
+the entire stack defined in Terraform and deployed by OIDC-federated GitHub
+Actions.
+
+## Outcomes
+
+- Publishing a post is one MDX file and a git push
+- Zero static cloud credentials in CI
+- Running cost ≈ $1–2/month
