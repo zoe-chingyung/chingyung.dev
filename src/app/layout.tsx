@@ -26,6 +26,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <ThemeScript />
+        {/* Umami analytics (cookieless). Replace data-website-id after creating
+            the site at cloud.umami.is — remove the env guard if preferred. */}
+        {process.env.NEXT_PUBLIC_UMAMI_ID ? (
+          <script
+            defer
+            src="https://cloud.umami.is/script.js"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
+          />
+        ) : null}
       </head>
       <body className="flex min-h-dvh flex-col font-sans">
         <a

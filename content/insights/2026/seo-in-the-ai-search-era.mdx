@@ -1,0 +1,63 @@
+---
+title: "SEO in 2026: ranking is no longer the goal — being cited is"
+description: "Zero-click search and AI answers changed what visibility means. How I'm positioning a new engineering site for the post-ranking era."
+date: 2026-06-14
+type: article
+tags: [seo, ai-engineering]
+draft: true
+featured: false
+---
+
+I launched this site into the strangest search landscape in twenty years. The
+old contract — rank on page one, collect the clicks — is quietly dissolving.
+
+## What actually changed
+
+Three shifts define search in 2026:
+
+**Zero-click is now the default, not the exception.** Industry studies put the
+majority of Google searches ending without a single click to any website —
+[SparkToro measured ~59%](https://scandiweb.com/blog/zero-click-google-search-and-generative-ai/)
+back in 2024 and the trend has only accelerated since AI Overviews rolled out.
+In Google's full AI Mode interface, some analyses report
+[over 90% of sessions ending with no external click](https://navoto.com/blog/how-ai-is-changing-seo-in-2026/).
+
+**The answer box ate the results page.** When an AI summary is present,
+[Pew Research found users click traditional results roughly half as often](https://scandiweb.com/blog/zero-click-google-search-and-generative-ai/).
+Ranking first and being read are no longer the same thing.
+
+**A new discipline emerged: GEO.** Generative Engine Optimization —
+[formalised in academic work out of Princeton and IIT](https://www.deepmarketing.it/en/blog/zero-click-search-google-ai-sme-2026)
+— optimises content to be *cited inside* AI-generated answers rather than
+listed below them. The practical techniques look familiar to anyone who has
+written good documentation: answer the question in the first two sentences,
+keep claims factual and verifiable, use structured data, write extractable
+self-contained passages.
+
+## Does traditional SEO die, then?
+
+No — and this is the part most hot takes get wrong. AI Overviews
+[draw heavily from pages that already rank well](https://scandiweb.com/blog/zero-click-google-search-and-generative-ai/),
+so classic technical SEO is what makes you *eligible* for citation in the
+first place. GEO sits on top of SEO, not in place of it.
+
+## What this means for an engineer's personal site
+
+For a site like this one, the goal was never ad-revenue traffic — it's being
+*found and trusted* by a recruiter, a hiring manager, or an engineer with the
+same bug I just fixed. That reframes the strategy:
+
+- **Machine-readable by design.** Server-rendered static HTML, JSON-LD
+  (`Person` on the home page, `Article` on every post), semantic headings,
+  and a sitemap. If an AI system parses this site, nothing is hidden behind
+  client-side rendering.
+- **Answer-first writing.** Every post's `description` field answers "what
+  will I learn here" in one sentence — it doubles as the meta description and
+  the extractable summary.
+- **Verifiable specifics over generic advice.** Posts here document real
+  builds with real configuration. Factual density is exactly what
+  answer engines select for.
+
+The deepest change is psychological: impressions and citations are the new
+currency, clicks are a bonus. Write for the human who eventually arrives —
+but structure for the machine that decides whether they ever do.
