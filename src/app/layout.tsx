@@ -35,7 +35,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-5">
+        <main id="main" data-pagefind-body className="mx-auto w-full max-w-3xl flex-1 px-5">
           {children}
         </main>
         <SiteFooter />

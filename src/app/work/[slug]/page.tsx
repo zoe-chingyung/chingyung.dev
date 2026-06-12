@@ -19,7 +19,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const item = getWorkItem(slug);
   if (!item) return {};
-  return { title: item.title, description: item.description };
+  return {
+    title: item.title,
+    description: item.description,
+    alternates: { canonical: item.permalink },
+  };
 }
 
 export default async function WorkItemPage({

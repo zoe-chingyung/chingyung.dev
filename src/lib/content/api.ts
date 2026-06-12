@@ -17,6 +17,28 @@ export type CaseStudy = (typeof caseStudies)[number];
 export type Certification = (typeof certifications)[number];
 export type WorkItem = Project | CaseStudy;
 
+/** Lightweight shapes (no compiled MDX body) safe to pass to client components. */
+export interface InsightMeta {
+  title: string;
+  description: string;
+  date: string;
+  type: Insight["type"];
+  tags: string[];
+  series?: string;
+  draft: boolean;
+  permalink: string;
+}
+
+export interface WorkMeta {
+  title: string;
+  description: string;
+  date: string;
+  kind: WorkItem["kind"];
+  tags: string[];
+  draft: boolean;
+  permalink: string;
+}
+
 /** Drafts are visible in dev (with a badge) and excluded from production builds. */
 const showDrafts = process.env.NODE_ENV !== "production";
 
@@ -38,6 +60,36 @@ export function getInsight(year: string, slug: string): Insight | undefined {
   return getInsights().find((i) => i.slug === `${year}/${slug}`);
 }
 
+export function getInsightMetas(): InsightMeta[] {
+  return getInsights().map((i) => ({
+    title: i.title,
+    description: i.description,
+    date: i.date,
+    type: i.type,
+    tags: i.tags,
+    series: i.series,
+    draft: i.draft,
+    permalink: i.permalink,
+  }));
+}
+
+export function getInsightsByTag(tag: string): Insight[] {
+  return getInsights().filter((i) => (i.tags as string[]).includes(tag));
+}
+
+// ---------- Series ----------
+
+export function getSeriesSlugs(): string[] {
+  return [...new Set(getInsights().flatMap((i) => (i.series ? [i.series] : [])))];
+}
+
+/** Entries in reading order (oldest first), for part numbering and prev/next. */
+export function getSeriesEntries(series: string): Insight[] {
+  return getInsights()
+    .filter((i) => i.series === series)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
 // ---------- Work ----------
 
 export function getWorkItems(): WorkItem[] {
@@ -48,10 +100,36 @@ export function getWorkItem(slug: string): WorkItem | undefined {
   return getWorkItems().find((i) => i.slug === slug);
 }
 
+export function getWorkMetas(): WorkMeta[] {
+  return getWorkItems().map((i) => ({
+    title: i.title,
+    description: i.description,
+    date: i.date,
+    kind: i.kind,
+    tags: i.tags,
+    draft: i.draft,
+    permalink: i.permalink,
+  }));
+}
+
+export function getWorkByTag(tag: string): WorkItem[] {
+  return getWorkItems().filter((i) => (i.tags as string[]).includes(tag));
+}
+
 export function getCertifications(): Certification[] {
   return [...certifications].sort((a, b) =>
     b.issueDate.localeCompare(a.issueDate),
   );
+}
+
+// ---------- Tags ----------
+
+export function getUsedInsightTags(): string[] {
+  return [...new Set(getInsights().flatMap((i) => i.tags as string[]))].sort();
+}
+
+export function getUsedWorkTags(): string[] {
+  return [...new Set(getWorkItems().flatMap((i) => i.tags as string[]))].sort();
 }
 
 // ---------- Cross-collection ----------
