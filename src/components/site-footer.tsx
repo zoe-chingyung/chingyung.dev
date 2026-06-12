@@ -5,10 +5,7 @@ export function SiteFooter() {
         <p>© {new Date().getFullYear()} Ching Yung</p>
         <p>
           Built with Next.js · Deployed on AWS via Terraform ·{" "}
-          <a
-            href="https://github.com/chingyung"
-            className="text-accent hover:underline"
-          >
+          <a href="https://github.com/zoe-chingyung/chingyung.dev" className="text-accent hover:underline">
             Source
           </a>
         </p>
