@@ -1,40 +1,53 @@
 import type { Metadata } from "next";
-import { experience, profile, skills } from "../../../content/data/resume";
-import { getCertifications } from "@/lib/content/api";
+import { experience, profile, skills, certifications, education, keyImpact } from "../../../content/data/resume";
 import { StatusLine } from "@/components/status-line";
-import { formatDate } from "@/components/tag-chip";
 
 export const metadata: Metadata = {
   title: "Resume",
   description: `${profile.title} — professional experience, skills matrix and career timeline.`,
-  alternates: { canonical: "/resume/" },
+  alternates: { canonical: "/resume/" }
 };
 
-function formatYm(ym: string): string {
-  return new Date(`${ym}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+function formatTimelineDate(dateStr: string): string {
+  if (!dateStr) return "";
+  if (dateStr.includes("-")) {
+    return new Date(`${dateStr}-01`).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+  }
+  return dateStr;
 }
 
 export default function ResumePage() {
-  const certifications = getCertifications();
-
   return (
     <section className="py-16">
       <StatusLine>cat ./resume --format full</StatusLine>
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">{profile.name}</h1>
-          <p className="mt-1 text-muted">{profile.title} · {profile.location}</p>
+          <p className="mt-1 text-muted">
+            {profile.title} · {profile.location}
+          </p>
         </div>
-        <a
-          href={profile.pdfPath}
-          download
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
-        >
+        <a href={profile.pdfPath} download className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90">
           Download PDF
         </a>
       </div>
       <p className="mt-6 max-w-xl leading-relaxed text-muted">{profile.summary}</p>
 
+      {/* ================= 新增：Key Impact 區塊 ================= */}
+      <div className="mt-14">
+        <StatusLine>cat ./key-metrics</StatusLine>
+        <h2 className="sr-only">Key Impact</h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {keyImpact.map((metric) => (
+            <div key={metric.title} className="rounded-lg border border-line p-4 bg-surface/50">
+              <div className="text-xl font-bold text-accent">{metric.title}</div>
+              <p className="mt-1 text-xs text-muted leading-relaxed">{metric.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ================= 工作經驗區塊 ================= */}
       <div className="mt-14">
         <StatusLine>history --career</StatusLine>
         <h2 className="sr-only">Experience</h2>
@@ -43,9 +56,13 @@ export default function ResumePage() {
             <li key={`${job.company}-${job.start}`} className="relative">
               <span aria-hidden="true" className="absolute -left-[1.85rem] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-accent bg-bg" />
               <p className="font-mono text-xs text-muted">
-                {formatYm(job.start)} — {job.end ? formatYm(job.end) : "present"}
+                {formatTimelineDate(job.start)} — {job.end ? formatTimelineDate(job.end) : "present"}
               </p>
-              <h3 className="mt-1 font-semibold">{job.role} · <span className="text-muted">{job.company}</span></h3>
+              <h3 className="mt-1 font-semibold">
+                {job.role} · <span className="text-muted">{job.company}</span>
+              </h3>
+              {/* 如果資料有寫公司背景簡介 (context)，就顯示出嚟 */}
+              {job.context && <p className="mt-1 text-xs text-muted italic bg-surface/30 px-2 py-1 rounded border-l-2 border-accent/50 max-w-xl">{job.context}</p>}
               <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-muted">
                 {job.highlights.map((h) => (
                   <li key={h}>{h}</li>
@@ -81,8 +98,25 @@ export default function ResumePage() {
         <ul className="mt-6 space-y-2">
           {certifications.map((cert) => (
             <li key={cert.name} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3">
-              <span className="text-sm font-semibold">{cert.name}</span>
-              <span className="font-mono text-xs text-muted">{cert.issuer} · {formatDate(cert.issueDate)}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold">{cert.name}</span>
+                <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">{cert.level}</span>
+              </div>
+              <span className="font-mono text-xs text-muted">{cert.issuer}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* ================= 新增：教育程度區塊 ================= */}
+      <div className="mt-14">
+        <StatusLine>ls ./education</StatusLine>
+        <h2 className="sr-only">Education</h2>
+        <ul className="mt-6 space-y-2">
+          {education.map((edu) => (
+            <li key={edu.degree} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3">
+              <span className="text-sm font-semibold">{edu.degree}</span>
+              <span className="font-mono text-xs text-muted">{edu.school}</span>
             </li>
           ))}
         </ul>
