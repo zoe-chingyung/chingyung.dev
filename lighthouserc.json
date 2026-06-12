@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "staticDistDir": "out",
-      "urlPatternFilters": ["^(?!.*404).*$"],
+      "urlPatternFilters": ["/", "/resume", "/insights"],
       "numberOfRuns": 1
     },
     "assert": {
