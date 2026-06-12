@@ -1,0 +1,64 @@
+name: Infrastructure
+
+on:
+  pull_request:
+    paths: ["infra/**"]
+  push:
+    branches: [main]
+    paths: ["infra/**"]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+env:
+  TF_DIR: infra/envs/prod
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Format check
+        run: terraform -chdir=infra fmt -check -recursive
+
+      - name: Configure AWS credentials (plan role)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Init
+        run: terraform -chdir=$TF_DIR init -input=false
+
+      - name: Validate
+        run: terraform -chdir=$TF_DIR validate
+
+      - name: Plan
+        run: terraform -chdir=$TF_DIR plan -input=false -no-color -out=tfplan
+
+  apply:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production # configure required reviewers = manual approval gate
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials (apply role)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_TF_APPLY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Init
+        run: terraform -chdir=$TF_DIR init -input=false
+
+      - name: Apply
+        run: terraform -chdir=$TF_DIR apply -input=false -auto-approve

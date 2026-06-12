@@ -1,0 +1,63 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "infra/**"
+      - "docs/**"
+      - "**.md"
+
+permissions:
+  contents: read
+  id-token: write # OIDC federation to AWS
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (static export)
+        run: npm run build
+
+      # Phase 2: add `npx pagefind --site out` here after the content engine lands.
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync immutable assets (long cache)
+        run: |
+          aws s3 sync out/ "s3://${{ vars.SITE_BUCKET }}" \
+            --delete \
+            --exclude "*.html" --exclude "*.txt" --exclude "*.xml" \
+            --cache-control "public,max-age=31536000,immutable"
+
+      - name: Sync HTML and metadata (no cache)
+        run: |
+          aws s3 sync out/ "s3://${{ vars.SITE_BUCKET }}" \
+            --exclude "*" \
+            --include "*.html" --include "*.txt" --include "*.xml" \
+            --cache-control "public,max-age=0,must-revalidate"
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*"
