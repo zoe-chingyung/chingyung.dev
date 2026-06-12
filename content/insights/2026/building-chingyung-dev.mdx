@@ -1,0 +1,52 @@
+---
+title: "Building chingyung.dev: a static-first knowledge platform on AWS"
+description: "Why I rebuilt my personal site as a Git-based MDX platform deployed with Terraform and OIDC-federated GitHub Actions."
+date: 2026-06-12
+type: article
+tags: [aws, terraform, platform-engineering]
+featured: true
+---
+
+My previous site was a single resume landing page. This rebuild turns it into
+a long-term knowledge platform — and the platform itself is the first case
+study published on it.
+
+## The architecture in one paragraph
+
+Next.js builds the entire site to static assets at build time. Content lives
+as MDX files in Git, validated against Zod schemas, and every page consumes it
+through a typed Content Access Layer. GitHub Actions assumes an AWS role via
+OIDC — no static credentials anywhere — syncs the build to a private S3
+bucket, and invalidates CloudFront.
+
+<Callout type="info">
+  The full architecture decision record lives in the repository under
+  `docs/ARCHITECTURE.md` — including the options I rejected and why.
+</Callout>
+
+## Infrastructure as Code
+
+The whole stack is Terraform. The deploy role is scoped to exactly two
+capabilities — syncing one bucket and invalidating one distribution:
+
+```hcl
+data "aws_iam_policy_document" "deploy_permissions" {
+  statement {
+    sid       = "SyncSiteBucket"
+    actions   = ["s3:PutObject", "s3:DeleteObject", "s3:GetObject"]
+    resources = ["${var.site_bucket_arn}/*"]
+  }
+
+  statement {
+    sid       = "InvalidateCache"
+    actions   = ["cloudfront:CreateInvalidation"]
+    resources = [var.distribution_arn]
+  }
+}
+```
+
+## What I'd tell past me
+
+Start with the walking skeleton. Having a one-command publish path from day
+one changed how every later decision felt — features land on a moving
+conveyor belt instead of piling up before a big-bang launch.

@@ -1,0 +1,7 @@
+# Replace with your real certifications — one YAML file each.
+name: "AWS Certified Security — Specialty"
+issuer: "Amazon Web Services"
+issueDate: 2025-01-15
+credentialUrl: https://www.credly.com/badges/example
+tags: [aws, security, certifications]
+featured: true

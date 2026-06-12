@@ -7,12 +7,14 @@
     "build": "next build",
     "start": "npx serve out",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "velite && tsc --noEmit"
   },
   "dependencies": {
+    "@shikijs/rehype": "^4.2.0",
     "next": "^15.3.3",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "velite": "^0.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.8",
