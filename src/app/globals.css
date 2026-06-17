@@ -138,3 +138,17 @@ body {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
 }
+
+
+@utility tech-card-glow {
+  @apply relative rounded-xl border border-line bg-surface/30 backdrop-blur-md transition-all duration-300;
+  
+  &:hover {
+    @apply border-accent -translate-y-0.5;
+    box-shadow: 0 0 20px var(--color-accent-soft);
+  }
+}
+
+@utility text-gradient-tech {
+  @apply bg-gradient-to-r from-white via-muted to-accent bg-clip-text text-transparent;
+}

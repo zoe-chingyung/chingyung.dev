@@ -7,7 +7,11 @@ export const profile = {
   title: "AWS Cloud & Security Engineer",
   location: "London, United Kingdom",
   summary:
-    "AWS Cloud & Security Engineer with 5+ years building and operating production infrastructure using Terraform, CloudFormation, and CI/CD automation. Hands-on across the AWS service catalogue — compute, storage, databases, serverless (Lambda), networking, and security — with a track record of deploying reusable IaC modules at scale and embedding compliance into every pipeline. Dual AWS Professional certifications (Solutions Architect + DevOps Engineer) and a CKA. Experienced building production observability with CloudWatch, Datadog, and Prometheus, and maintaining operational runbooks and incident response processes that keep services reliable.",
+  [
+    "Ching YUNG is an AWS Cloud & Security Engineer executing high-availability infrastructure automation and zero-trust engineering at scale. With 5+ years of managing high-stress production environments, Ching treats infrastructure as deterministic code and security as an immutable pipeline constraint.",
+    "Specializing in defensive platform engineering, Ching designs multi-account AWS enterprise topologies using declarative IaC i.e. Terraform or CloudFormation. Every system is architected to fail silently and self-heal automatically. By programmatically injecting strict compliance guardrails and vulnerability scanning directly into GitOps CI/CD workflows, human error is systematically eliminated from the deployment equation.",
+    "To ensure production telemetry matches runtime reality, Ching constructs high-fidelity observability ecosystems via Datadog, Prometheus, and CloudWatch—shifting operations from reactive incident response to predictive mitigation. This engineering execution is validated by dual AWS Professional credentials and the Certified Kubernetes Administrator (CKA) title.",
+  ],
   links: {
     github: "https://github.com/zoe-chingyung",
     linkedin: "https://linkedin.com/in/thezoeyung",
