@@ -31,7 +31,7 @@ export default function WorkPage() {
       </div>
       <ul className="mt-5 grid gap-3 sm:grid-cols-2">
         {certifications.map((cert) => (
-          <li key={cert.name} className="rounded-lg border border-line p-4">
+          <li key={cert.name} className="rounded-lg border border-line p-4 tech-card-glow">
             <h3 className="text-sm font-semibold">{cert.name}</h3>
             <p className="mt-1 font-mono text-xs text-muted">
               {cert.issuer} · {formatDate(cert.issueDate)}

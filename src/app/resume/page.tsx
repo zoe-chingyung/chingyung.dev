@@ -41,13 +41,11 @@ export default function ResumePage() {
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">{profile.name}</h1>
-          <p className="mt-1 text-muted">{profile.title} · {profile.location}</p>
+          <p className="mt-1 text-muted">
+            {profile.title} · {profile.location}
+          </p>
         </div>
-        <a
-          href={profile.pdfPath}
-          download
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90"
-        >
+        <a href={profile.pdfPath} download className="rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg transition-opacity hover:opacity-90">
           Download PDF
         </a>
       </div>
@@ -59,9 +57,9 @@ export default function ResumePage() {
         <h2 className="sr-only">Key Impact</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {keyImpact.map((metric) => (
-            <div key={metric.title} className="rounded-lg border border-line p-4 bg-surface/50">
+            <div key={metric.title} className="rounded-xl border border-line bg-surface/50 p-6 text-center transition-all duration-300 tech-card-glow">
               <div className="text-xl font-bold text-accent">{metric.title}</div>
-              <p className="mt-1 text-xs text-muted leading-relaxed">{metric.description}</p>
+              <p className="mt-1 text-xs text-start text-muted leading-relaxed">{metric.description}</p>
             </div>
           ))}
         </div>
@@ -81,11 +79,7 @@ export default function ResumePage() {
               <h3 className="mt-1 font-semibold">
                 {job.role} · <span className="text-muted">{job.company}</span>
               </h3>
-              {job.context && (
-                <p className="mt-1 text-xs text-muted italic bg-surface/30 px-2 py-1 rounded border-l-2 border-accent/50 max-w-xl">
-                  {job.context}
-                </p>
-              )}
+              {job.context && <p className="mt-1 text-xs text-muted italic bg-surface/30 px-2 py-1 rounded border-l-2 border-accent/50 max-w-xl">{job.context}</p>}
               <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-muted">
                 {job.highlights.map((h) => (
                   <li key={h}>{h}</li>
@@ -122,19 +116,12 @@ export default function ResumePage() {
         <h2 className="sr-only">Certifications</h2>
         <ul className="mt-6 space-y-2">
           {certifications.map((cert) => (
-            <li key={cert.name} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3">
+            <li key={cert.name} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3 tech-card-glow">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-semibold">{cert.name}</span>
-                <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">
-                  {getCertLevel(cert.name)}
-                </span>
+                <span className="rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">{getCertLevel(cert.name)}</span>
                 {cert.credentialUrl && (
-                  <a 
-                    href={cert.credentialUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="font-mono text-[11px] text-accent hover:underline ml-1"
-                  >
+                  <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="font-mono text-[11px] text-accent hover:underline ml-1">
                     Verify ↗
                   </a>
                 )}
@@ -153,7 +140,7 @@ export default function ResumePage() {
         <h2 className="sr-only">Education</h2>
         <ul className="mt-6 space-y-2">
           {education.map((edu) => (
-            <li key={edu.degree} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3">
+            <li key={edu.degree} className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-line px-4 py-3 tech-card-glow">
               <span className="text-sm font-semibold">{edu.degree}</span>
               <span className="font-mono text-xs text-muted">{edu.school}</span>
             </li>

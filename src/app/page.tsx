@@ -4,6 +4,8 @@ import { JsonLd } from "@/components/jsonld";
 import { StatusLine } from "@/components/status-line";
 import { formatDate } from "@/components/tag-chip";
 import { profile } from "../../content/data/resume";
+import { ProfileHeaderCard } from "@/components/profile-header-card";
+import { WhoAmiSection } from "@/components/whoami-section";
 
 const focus = [
   "AWS security posture management",
@@ -52,15 +54,10 @@ export default function HomePage() {
           sameAs: [profile.links.github, profile.links.linkedin],
         }}
       />
-      <section className="pb-16 pt-24 sm:pt-32">
-        <StatusLine>whoami</StatusLine>
-        <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-          Cloud · Platform · Security <span className="text-accent">Engineer</span>
-        </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-          {profile.summary}
-        </p>
+      <section className="pb-12 pt-24 sm:pt-32">
+        <ProfileHeaderCard />
       </section>
+      <WhoAmiSection />
 
       <section className="border-t border-line py-12">
         <StatusLine>current --focus</StatusLine>
@@ -77,7 +74,7 @@ export default function HomePage() {
         <StatusLine>cat ./featured/*</StatusLine>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {cards.map((card) => (
-            <Link key={card.href + card.title} href={card.href} className="group flex flex-col rounded-lg border border-line p-4 transition-colors hover:border-accent">
+            <Link key={card.href + card.title} href={card.href} className="group flex flex-col rounded-lg border border-line p-4 transition-colors hover:border-accent tech-card-glow">
               <p className="font-mono text-[11px] uppercase tracking-wide text-muted">{card.eyebrow}</p>
               <h2 className="mt-2 text-sm font-semibold transition-colors group-hover:text-accent">{card.title}</h2>
               <p className="mt-1.5 line-clamp-3 text-sm leading-relaxed text-muted">{card.desc}</p>
@@ -95,7 +92,7 @@ export default function HomePage() {
             { href: "/work/", title: "Work", desc: "Projects, case studies and certifications." },
             { href: "/insights/", title: "Insights", desc: "Articles, journals and engineering notes." },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="group rounded-lg border border-line p-4 transition-colors hover:border-accent">
+            <Link key={item.href} href={item.href} className="group rounded-lg border border-line p-4 transition-colors hover:border-accent tech-card-glow">
               <h2 className="text-sm font-semibold transition-colors group-hover:text-accent">
                 {item.title} <span aria-hidden="true">→</span>
               </h2>
