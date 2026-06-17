@@ -114,7 +114,7 @@ resource "aws_cloudfront_response_headers_policy" "security" {
     content_security_policy {
       # 'unsafe-inline' for script-src is required by Next.js static export
       # bootstrap scripts; revisit if/when nonce support lands for export mode.
-      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloud.umami.is; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
       override                = true
     }
   }
