@@ -29,7 +29,7 @@ export function ProfileHeaderCard() {
       <div className="flex items-start gap-4 sm:items-center sm:gap-5">
         <Image src="/avatar.JPG" alt="Ching Yung" width={150} height={150} className="h-[150px] w-[150px] shrink-0 -scale-x-100 rounded-[5px] border border-white/20 object-cover ring-1 ring-white/10 ring-offset-2 ring-offset-zinc-900" priority />
         <div>
-          <h2 className="font-bold text-2xl tracking-tight">Hi, I'm {profile.name}</h2>
+          <h2 className="font-bold text-2xl tracking-tight">Hi, I am {profile.name}</h2>
           <p className="mt-1 text-sm text-muted">
             Cloud · Platform · Security <span className="text-accent">Engineer</span>
           </p>
@@ -57,7 +57,7 @@ export function ProfileHeaderCard() {
         <p>
           <span className="text-zinc-500">location</span>
           <span className="text-zinc-600"> = </span>
-          <span className="text-zinc-400">&quot;London, UK&quot;</span>
+          <span className="text-zinc-400">London, UK</span>
         </p>
 
         <p className="flex items-center sm:justify-end">
