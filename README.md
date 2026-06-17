@@ -1,83 +1,93 @@
+<div align="center">
+
 # chingyung.dev
 
-Personal engineering knowledge platform — Cloud · Platform · Security.
+**Personal engineering knowledge platform — Cloud · Platform · Security**
 
-Static-first Next.js site, MDX content in Git, deployed to AWS (S3 + CloudFront)
-via Terraform and GitHub Actions with OIDC. Full design rationale in
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+[![Deploy](https://github.com/zoe-chingyung/chingyung.dev/actions/workflows/deploy.yml/badge.svg)](https://github.com/zoe-chingyung/chingyung.dev/actions/workflows/deploy.yml)
+[![CI](https://github.com/zoe-chingyung/chingyung.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/zoe-chingyung/chingyung.dev/actions/workflows/ci.yml)
+
+**Live: [chingyung.dev](https://chingyung.dev)**
+
+</div>
+
+A static-first knowledge platform that doubles as a working demonstration of
+cloud, platform and security engineering practice. Publishing a post is one
+MDX file and a `git push`; everything in between is automated, schema-validated
+and credential-free.
+
+## Highlights
+
+- **Content as code, behind a contract** — MDX + frontmatter validated against
+  Zod schemas at build time; malformed content fails CI before it can ship.
+  All pages consume content through a typed Content Access Layer, so the
+  authoring backend (raw MDX today; Keystatic/Tina/AI-assisted later) can
+  change without refactoring a single page.
+- **Zero static credentials** — GitHub Actions assumes least-privilege AWS IAM
+  roles via OIDC federation. The deploy role can do exactly two things: sync
+  one bucket, invalidate one distribution.
+- **Static everything** — Next.js `output: 'export'` to a private S3 bucket
+  behind CloudFront (OAC, HTTP/3, strict security headers incl. CSP + HSTS
+  preload). Pagefind ships a build-time search index; OG cards are generated
+  per-article at build. Running cost ≈ $1–2/month.
+- **100% Infrastructure as Code** — Terraform modules for the static site,
+  DNS/ACM and GitHub OIDC. CI plans on PRs, applies behind an environment
+  approval gate.
+- **Quality gates** — lint, typecheck, schema validation and a Lighthouse CI
+  budget (≥90 across all categories) on every PR.
+
+## Architecture
+
+```
+MDX content ──▶ Velite (Zod contract) ──▶ Content Access Layer ──▶ Next.js static export
+                                                                        │
+GitHub Actions (OIDC, least-privilege) ──▶ S3 (private, OAC) ──▶ CloudFront ──▶ visitors
+```
+
+Full design rationale, ADRs and roadmap: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) ·
+Publishing guide: [docs/AUTHORING.md](docs/AUTHORING.md)
 
 ## Stack
 
-- Next.js 15 (App Router, `output: 'export'`) · TypeScript · Tailwind CSS v4
-- Content: MDX + frontmatter behind a typed Content Access Layer (Phase 2)
-- Infra: Terraform — S3 (private, OAC) + CloudFront + Route 53 + ACM
-- CI/CD: GitHub Actions, OIDC role assumption (no static AWS keys)
+Next.js 15 (App Router, static export) · TypeScript · Tailwind CSS v4 ·
+Velite + Zod · Shiki · Pagefind · Terraform · AWS (S3, CloudFront, Route 53,
+ACM, IAM) · GitHub Actions · Umami analytics
 
 ## Local development
 
 ```bash
 npm ci
-npm run dev        # http://localhost:3000
-npm run build      # static export to ./out
+npm run dev        # http://localhost:3000 (drafts visible with a DRAFT badge)
+npm run build      # static export to ./out + Pagefind index
+npm run typecheck  # velite && tsc --noEmit
 ```
 
-## Bootstrap runbook (Phase 0 — run once)
+To test search locally (the index only exists in production builds):
+`npm run build && npx serve out`.
 
-Prerequisites: AWS account with admin credentials locally, Terraform >= 1.10,
-the GitHub repo created, chingyung.dev registered.
+## Publishing content
 
-1. **State bucket** (local state, one time):
+```bash
+git checkout -b post/my-post
+# write content/insights/2026/my-post.mdx with draft: true
+# preview, open a PR (CI validates frontmatter), flip draft: false, merge
+```
 
-   ```bash
-   cd infra/bootstrap
-   terraform init && terraform apply
-   ```
-
-2. **Set your repo name** in `infra/envs/prod/variables.tf`
-   (`github_repository = "owner/repo"`).
-
-3. **Provision everything** (run locally the first time — the OIDC roles that
-   CI later uses are created by this apply):
-
-   ```bash
-   cd infra/envs/prod
-   terraform init && terraform apply
-   ```
-
-   Certificate validation completes only after step 4, so if the first apply
-   stalls on `aws_acm_certificate_validation`, do step 4 and re-run apply.
-
-4. **Delegate DNS**: take the `name_servers` output and set them as the
-   nameservers for chingyung.dev at your registrar. Allow up to an hour.
-
-5. **GitHub configuration**:
-   - Create an environment named `production`; add yourself as a required
-     reviewer (this gates `terraform apply` and production deploys).
-   - Repository variables (Settings → Secrets and variables → Actions →
-     Variables) from the Terraform outputs:
-
-     | Variable | Source |
-     |---|---|
-     | `AWS_REGION` | e.g. `eu-west-2` |
-     | `SITE_BUCKET` | output `site_bucket` |
-     | `CLOUDFRONT_DISTRIBUTION_ID` | output `distribution_id` |
-     | `AWS_DEPLOY_ROLE_ARN` | output `deploy_role_arn` |
-     | `AWS_PLAN_ROLE_ARN` | output `plan_role_arn` |
-     | `AWS_TF_APPLY_ROLE_ARN` | output `apply_role_arn` |
-
-6. **First deploy**: push to `main`. The `Deploy site` workflow builds, syncs
-   to S3 and invalidates CloudFront. https://chingyung.dev is live.
+Tags must exist in `content/data/taxonomy.ts` — add new ones in the same PR
+as the content that needs them. Details in [docs/AUTHORING.md](docs/AUTHORING.md).
 
 ## Repository layout
 
 ```
 .github/workflows/   ci.yml · deploy.yml · infra.yml
-content/             knowledge base (Phase 2)
+content/             the knowledge base (insights, projects, case studies, certifications)
 docs/                architecture, ADRs, authoring guide
 infra/               Terraform (bootstrap · modules · envs/prod)
-src/                 Next.js app
+src/                 Next.js app (lib/content = Content Access Layer)
 ```
 
-## Roadmap
+## Status
 
-See docs/ARCHITECTURE.md §9. Current phase: **1 — walking skeleton**.
+Phases 0–4 of the [roadmap](docs/ARCHITECTURE.md#9-delivery-roadmap) are
+complete (foundations → walking skeleton → content engine → pages/search/SEO →
+launch). Current phase: **steady state** — publish, iterate, grow.
