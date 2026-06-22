@@ -46,6 +46,7 @@ export const experience: ExperienceEntry[] = [
     company: "Self-directed",
     role: "Career Development & Upskilling",
     start: "2025",
+    end: "2026",
     highlights: [
       "Earned CKA certification — deepened Linux systems and Kubernetes operations knowledge across namespaces, network policies, and node-level troubleshooting.",
       "Open-sourced a serverless AWS platform on GitHub — API Gateway + Lambda backbone with CloudFormation IaC, automated deployment pipelines, and security defaults baked into reusable templates.",
