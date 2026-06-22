@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { profile } from "../../../content/data/resume";
-import { EmailLink } from "@/components/email-link";
 import { StatusLine } from "@/components/status-line";
+import { CopyEmailKv } from "@/components/copy-email-kv";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -33,7 +33,7 @@ export default function ContactPage() {
         ))}
         <li className="flex items-baseline justify-between gap-4 rounded-lg border border-line px-4 py-3">
           <span className="text-sm font-semibold">Email</span>
-          <span className="font-mono text-xs"><EmailLink user={user} domain={domain} /></span>
+          <span className="font-mono text-xs"><CopyEmailKv user={user} domain={domain} /></span>
         </li>
       </ul>
     </section>
