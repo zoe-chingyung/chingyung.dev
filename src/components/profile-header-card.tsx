@@ -27,7 +27,7 @@ export function ProfileHeaderCard() {
     <div className="mb-8 flex flex-col gap-6 rounded-xl border border-white/10 bg-surface/50 p-5 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:p-6 tech-card-glow">
       {/* Left — Identity */}
       <div className="flex items-start gap-4 sm:items-center sm:gap-5">
-        <Image src="/avatar.JPG" alt="Ching Yung" width={150} height={150} className="h-[150px] w-[150px] shrink-0 -scale-x-100 rounded-[5px] border border-white/20 object-cover ring-1 ring-white/10 ring-offset-2 ring-offset-zinc-900" priority />
+        <Image src="/avatar.JPG" alt="Ching Yung" width={150} height={150} className="h-[150px] w-[150px] shrink-0 -scale-x-100 rounded-[5px] border border-white/20 object-cover " priority />
         <div>
           <h2 className="font-bold text-2xl tracking-tight">Hi, I am {profile.name}</h2>
           <p className="mt-1 text-sm text-muted">
